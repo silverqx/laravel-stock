@@ -1,4 +1,5 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /*
  |--------------------------------------------------------------------------
@@ -11,5 +12,49 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix
+    .js('resources/js/app.js', 'public/js')
+
+mix
+    .sass('resources/sass/bootstrap.scss', 'public/css')
+    .sass('resources/sass/app.scss', 'public/css')
+
+mix.extract([
+    'axios',
+    'lodash',
+    'jquery',
+    'popper.js',
+    'bootstrap',
+])
+
+mix.sourceMaps(true, 'cheap-module-source-map')
+
+// Production Settings
+if (mix.inProduction())
+    // Versioning / Cache Busting
+    // Disabled Notifications
+    mix
+        .version()
+        .disableNotifications()
+        .options({
+            // Don't clear screen in prod. env
+            clearConsole: false,
+        })
+
+// Create Webpack plugins Array
+// const plugins = []
+//
+// if (!mix.inProduction()) {
+//     plugins.push(
+//         new BundleAnalyzerPlugin({
+//             // analyzerMode: 'static',
+//             analyzerHost: 'localhost',
+//             analyzerPort: 8081,
+//         })
+//     )
+// }
+//
+// mix
+//     .webpackConfig({
+//         plugins,
+//     })
