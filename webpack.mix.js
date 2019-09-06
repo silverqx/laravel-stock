@@ -13,19 +13,29 @@ const mix = require('laravel-mix')
  */
 
 mix
-    .js('resources/js/app.js', 'public/js')
+    // Have to be first, because of sass paths and chunk names
+    .js('resources/js/dummy.js', 'public/js')
 
-mix
-    .sass('resources/sass/bootstrap.scss', 'public/css')
+    .js('resources/js/login.js', 'public/js')
+    .sass('resources/sass/vendor/bootstrap-login.scss', 'public/css')
+    .sass('resources/sass/login.scss', 'public/css')
+
+    .js('resources/js/pages/product.js', 'public/js/pages')
+
+    // Have to be last js, because of vendor and manifest path
+    .js('resources/js/common.js', 'public/js')
+    .sass('resources/sass/vendor/bootstrap.scss', 'public/css')
     .sass('resources/sass/app.scss', 'public/css')
 
-mix.extract([
-    'axios',
-    'lodash',
-    'jquery',
-    'popper.js',
-    'bootstrap',
-])
+mix.extract([])
+// mix.extract([
+//     'axios',
+//     'lodash',
+//     'jquery',
+//     'popper.js',
+//     'bootstrap',
+//     'bootbox',
+// ])
 
 mix.sourceMaps(true, 'cheap-module-source-map')
 
@@ -58,3 +68,5 @@ if (mix.inProduction())
 //     .webpackConfig({
 //         plugins,
 //     })
+
+mix.dump()

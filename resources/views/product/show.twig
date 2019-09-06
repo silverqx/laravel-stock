@@ -1,0 +1,76 @@
+{% extends 'product/layout' %}
+
+{% block title product.name|capitalize ~ ' detail' %}
+
+{% block content %}
+    <div class="col-sm-12 col-md-10 col-lg-8">
+        <div class="card">
+            <div class="card-header">Detail of <strong>{{ product.name }}</strong></div>
+            <div class="card-body">
+                <table class="table table-borderless cs-tbl-product-show">
+                    <tr>
+                        <td>ID</td>
+                        <td>{{ product.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>{{ product.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Balance</td>
+                        <td>{{ product.balance }}</td>
+                    </tr>
+                    <tr>
+                        <td>Position</td>
+                        <td>{{ product.position }}</td>
+                    </tr>
+                    <tr>
+                        <td>Image</td>
+                        <td>
+                            <div class="img-wrapper product-image">
+                                {{ product.getFirstMedia('products').img('thumb-120', {
+                                    title: 'Image ' ~ product.name|capitalize
+                                }) | raw }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="d-none d-sm-table-row">
+                        <td></td>
+                        <td class="cs-action-bar">
+                            <a class="btn btn-primary mr-1" href="{{ route('products.index') }}">
+                                <i class="fas mr-1 fa-arrow-left"></i>
+                                Back
+                            </a>
+                            <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
+                                <i class="fas fa-edit mr-1"></i>
+                                Edit
+                            </a>
+                            <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
+                               data-method="delete">
+                                <i class="fas mr-1 fa-trash"></i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="d-table-row d-sm-none">
+                        <td class="cs-action-bar" colspan="2">
+                            <a class="btn btn-primary mr-1" href="{{ route('products.index') }}">
+                                <i class="fas mr-1 fa-arrow-left"></i>
+                                Back
+                            </a>
+                            <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
+                                <i class="fas fa-edit mr-1"></i>
+                                Edit
+                            </a>
+                            <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
+                               data-method="delete">
+                                <i class="fas mr-1 fa-trash"></i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

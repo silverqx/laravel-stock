@@ -1,0 +1,136 @@
+/*
+ * Site's content
+ *
+ * @author:    Silver Zachara
+ * @email:     silver.zachara@gmail.com
+ * @website:   https://laravel-stock.test/
+ */
+
+/* Basic tags
+ -----------------------------------------------------------------------------*/
+
+/* Headings
+ -----------------------------------------------------------------------------*/
+
+/* Styles for Images
+ -----------------------------------------------------------------------------*/
+
+/* Drop shadow effect for the images. Sadly this requires a div to be wrapped around the image markup, which is a shame */
+.img-wrapper {
+    float: left;
+    position: relative;
+    left: 5px;
+    top: 5px;
+    line-height: 0;
+    background: url(../../images/img-shadow.gif) no-repeat bottom right;
+}
+
+.img-wrapper-left {
+    float: left;
+    position: relative;
+    left: 5px;
+    top: 5px;
+    line-height: 0;
+    background: url(../../images/img-shadow.gif) no-repeat bottom right;
+}
+
+.img-wrapper-right {
+    float: right;
+    position: relative;
+    left: 5px;
+    top: 5px;
+    line-height: 0;
+    background: url(../../images/img-shadow.gif) no-repeat bottom right;
+}
+
+.img-wrapper img, .img-wrapper-left img, .img-wrapper-right img {
+    position: relative;
+    left: -4px;
+    top: -4px;
+    float: none;
+    width: 126px;
+    height: 126px;
+    padding: 2px;
+    background: #fff;
+    border: 1px solid #D2D2D2 !important;
+}
+
+.no-bg-img {
+    background-image: none;
+}
+
+.no-image-text {
+    color: #878787;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    left: -5px;
+    top: -5px;
+    float: none;
+    line-height: 118px;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.10);
+    height: 100%;
+    padding: 0;
+    background: #fff none;
+    border: 1px solid #D2D2D2 !important;
+}
+
+/* Product Image */
+.img-wrapper.product-image {
+    width: 126px;
+    height: 126px;
+}
+
+/* Colors
+ -----------------------------------------------------------------------------*/
+.red {
+    color: #9d261d !important;
+}
+
+.green {
+    color: #46a546 !important;
+}
+
+.yellow {
+    color: #ffc40d !important;
+}
+
+.blue {
+    color: #049cdb !important;
+}
+
+.blue-dark {
+    color: #0064cd !important;
+}
+
+.orange {
+    color: #f89406 !important;
+}
+
+.pink {
+    color: #c3325f !important;
+}
+
+.purple {
+    color: #7a43b6 !important;
+}
+
+.grey {
+    color: #737373 !important;
+}
+
+/* CSS3
+ ------------------------------------------------------------------------------- */
+.cs-fade {
+    opacity: 0;
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -ms-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+}
+
+.cs-fade.in {
+    opacity: 1;
+}

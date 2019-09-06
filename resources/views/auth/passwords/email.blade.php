@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.login')
+
+@section('title', 'Reset Password')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10 col-lg-8 col-xl-7">
             <div class="card">
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
@@ -34,6 +36,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
+                                    <i class="fas mr-1 fa-envelope"></i>
                                     {{ __('Send Password Reset Link') }}
                                 </button>
                             </div>

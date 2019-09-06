@@ -1,0 +1,86 @@
+<form class="cs-form-horizontal" action="{{ product ? route('products.update', product) : route('products.store') }}"
+      method="post" enctype="multipart/form-data">
+
+    {{ csrf_field() }}
+    {{ product ? method_field('put') }}
+
+    <div class="form-group row">
+        <label for="inputName" class="col-sm-3 col-md-2 col-form-label">Name</label>
+        <div class="col-sm-9 col-md-10">
+            <input type="text" class="form-control {{ errors.has('name') ? 'is-invalid' }}" id="inputName"
+                   placeholder="Name" name="name" value="{{ old('name', product.name ?: '') ?: '' }}" required
+                   maxlength="255" minlength="0" autofocus>
+            {% if errors.has('name') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('name') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPosition" class="col-sm-3 col-md-2 col-form-label">Position</label>
+        <div class="col-sm-4 col-md-3 col-lg-3">
+            <input type="number" class="form-control {{ errors.has('position') ? 'is-invalid' }}" id="inputPosition"
+                   placeholder="Position" name="position" value="{{ old('position', product.position ?: '') ?: '' }}"
+                   required min="0">
+            {% if errors.has('position') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('position') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputBalance" class="col-sm-3 col-md-2 col-form-label">Balance</label>
+        <div class="col-sm-4 col-md-3 col-lg-3">
+            <input type="number" class="form-control {{ errors.has('balance') ? 'is-invalid' }}" id="inputBalance"
+                   placeholder="Balance" name="balance" value="{{ old('balance', product.balance ?: '') ?: '' }}"
+                   required min="0">
+            {% if errors.has('balance') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('balance') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputImage" class="col-sm-3 col-md-2 col-form-label">Image</label>
+        <div class="col-sm-9 col-md-10">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input {{ errors.has('image') ? 'is-invalid' }}" id="inputImage"
+                       name="image" value="{{ old('image', product.image ?: '') ?: '' }}"
+                       {{ errors.has('image') ?: 'aria-describedby="imageHelp"' }}>
+                <label class="custom-file-label" for="inputImage">Choose file</label>
+                {% if errors.has('image') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('image') }}
+                    </div>
+                {% endif %}
+                <small id="imageHelp" class="form-text text-muted">
+                    <i class="fas fa-info mr-1"></i>
+                    Maximum image size is 2MiB.
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row cs-product-data cs-action-bar" data-product-name="{{ product.name }}">
+        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 clearfix">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas mr-1 {{ product ? 'fa-edit' : 'fa-plus' }}"></i>
+                {{ product ? 'Edit' : 'Create' }}
+            </button>
+            <a href="{{ route('products.index') }}" class="btn btn-light">
+                <i class="fas mr-1 fa-ban"></i>
+                Cancel
+            </a>
+            {% if product %}
+                <a href="{{ route('products.destroy', product) }}"
+                   class="btn btn-light cs-product-delete"
+                   data-method="delete">
+                    <i class="fas mr-1 fa-trash"></i>
+                    Delete
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</form>

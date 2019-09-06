@@ -1,0 +1,14 @@
+.cs-form-horizontal label {
+    font-weight: bold;
+}
+
+.cs-form-horizontal label.custom-file-label {
+    font-weight: normal !important;
+    text-align: left !important;
+}
+
+@include media-breakpoint-up(sm) {
+    .cs-form-horizontal label {
+        text-align: right;
+    }
+}

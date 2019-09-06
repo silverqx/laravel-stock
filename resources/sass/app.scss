@@ -5,4 +5,14 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+// Common Styles
+@import "common/layout";
+@import "common/forms";
+@import "common/site";
+
+// Pages
+@import "pages/product";

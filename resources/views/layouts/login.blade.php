@@ -4,27 +4,47 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta content="noindex,nofollow" name="robots">
+    <meta content="noindex,nofollow,snippet,noarchive" name="googlebot">
+
+    <meta name="description" content="Laravel Stock test application.">
+    <meta name="keywords" content="stock, test application, laravel">
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        @if(View::hasSection('title'))
+            @yield('title') | {{ config('app.name') }}
+        @else
+            {{ config('app.name') }}
+        @endif
+    </title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ mix('/js/manifest.js') }}" defer></script>
+    <script src="{{ mix('/js/vendor.js') }}" defer></script>
+    <script src="{{ mix('/js/login.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f192845c58.js" defer></script>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/bootstrap-login.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/login.css') }}" rel="stylesheet">
+
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -58,6 +78,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
+                                        <i class="fas mr-1 fa-sign-out-alt"></i>
                                         {{ __('Logout') }}
                                     </a>
 
