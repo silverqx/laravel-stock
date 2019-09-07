@@ -24,15 +24,17 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(10);
+        $search = $request->query('search');
 
-        $media = $products->first()->getFirstMedia('products')('thumb-40');
+        $products = Product::where('name', 'like', "%$search%")->paginate(10);
 
-        return view('product.index', compact('products', 'media'));
+        return view('product.index', compact('products', 'search'));
     }
 
     /**
