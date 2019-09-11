@@ -1,35 +1,31 @@
-{% extends 'product/layout' %}
+{% extends 'user/layout' %}
 
-{% block title product.name|capitalize ~ ' detail' %}
+{% block title user.full_name|title ~ ' detail' %}
 
 {% block content %}
     <div class="col-sm-12 col-md-10 col-lg-8">
         <div class="card">
-            <div class="card-header">Detail of <strong>{{ product.name }}</strong></div>
+            <div class="card-header">Detail of <strong>{{ user.full_name|title }}</strong></div>
             <div class="card-body">
                 <table class="table table-borderless cs-tbl-show">
                     <tr>
                         <td>ID</td>
-                        <td>{{ product.id }}</td>
+                        <td>{{ user.id }}</td>
                     </tr>
                     <tr>
-                        <td>Name</td>
-                        <td>{{ product.name }}</td>
+                        <td>Full Name</td>
+                        <td>{{ user.full_name }}</td>
                     </tr>
                     <tr>
-                        <td>Balance</td>
-                        <td>{{ product.balance }}</td>
-                    </tr>
-                    <tr>
-                        <td>Position</td>
-                        <td>{{ product.position }}</td>
+                        <td>Email</td>
+                        <td>{{ user.email }}</td>
                     </tr>
                     <tr>
                         <td>Image</td>
                         <td>
                             <div class="img-wrapper model-show-image">
-                                {{ product.getFirstMedia('products').img('thumb-120', {
-                                    title: 'Image ' ~ product.name|capitalize
+                                {{ user.getFirstMedia('users').img('thumb-120', {
+                                    title: 'Image ' ~ user.full_name|title
                                 }) | raw }}
                             </div>
                         </td>
@@ -37,17 +33,17 @@
                     <tr class="d-none d-sm-table-row">
                         <td></td>
                         <td class="cs-action-bar">
-                            <a class="btn btn-primary mr-1" href="{{ route('products.index') }}">
+                            <a class="btn btn-primary mr-1" href="{{ route('users.index') }}">
                                 <i class="fas mr-1 fa-arrow-left"></i>
                                 Back
                             </a>
-                            <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
+                            <a class="btn btn-primary" href="{{ route('users.edit', user) }}">
                                 <i class="fas fa-edit mr-1"></i>
                                 Edit
                             </a>
-                            <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
+                            <a class="btn btn-light float-right" href="{{ route('users.destroy', user) }}"
                                data-method="delete" data-toggle="bootbox"
-                               data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
+                               data-confirm-message="Do you want to delete <strong>{{ user.full_name|title }}</strong>?">
                                 <i class="fas mr-1 fa-trash"></i>
                                 Delete
                             </a>
@@ -55,17 +51,17 @@
                     </tr>
                     <tr class="d-table-row d-sm-none">
                         <td class="cs-action-bar" colspan="2">
-                            <a class="btn btn-primary mr-1" href="{{ route('products.index') }}">
+                            <a class="btn btn-primary mr-1" href="{{ route('users.index') }}">
                                 <i class="fas mr-1 fa-arrow-left"></i>
                                 Back
                             </a>
-                            <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
+                            <a class="btn btn-primary" href="{{ route('users.edit', user) }}">
                                 <i class="fas fa-edit mr-1"></i>
                                 Edit
                             </a>
-                            <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
+                            <a class="btn btn-light float-right" href="{{ route('users.destroy', user) }}"
                                data-method="delete" data-toggle="bootbox"
-                               data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
+                               data-confirm-message="Do you want to delete <strong>{{ user.full_name|title }}</strong>?">
                                 <i class="fas mr-1 fa-trash"></i>
                                 Delete
                             </a>

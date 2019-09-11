@@ -5,11 +5,12 @@
     {{ product ? method_field('put') }}
 
     <div class="form-group row">
-        <label for="inputName" class="col-sm-3 col-md-2 col-form-label">Name</label>
-        <div class="col-sm-9 col-md-10">
+        <label for="inputName" class="col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9">
             <input type="text" class="form-control {{ errors.has('name') ? 'is-invalid' }}" id="inputName"
-                   placeholder="Name" name="name" value="{{ old('name', product.name ?: '') ?: '' }}" required
-                   maxlength="255" minlength="0" autofocus>
+                   placeholder="Name" name="name"
+                   value="{{ old('name', product.name ?: '') ?: '' }}"
+                   required maxlength="255" minlength="2" autofocus>
             {% if errors.has('name') %}
                 <div class="invalid-feedback">
                     {{ errors.first('name') }}
@@ -18,8 +19,8 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="inputPosition" class="col-sm-3 col-md-2 col-form-label">Position</label>
-        <div class="col-sm-4 col-md-3 col-lg-3">
+        <label for="inputPosition" class="col-sm-3 col-form-label">Position</label>
+        <div class="col-sm-4 col-md-3">
             <input type="number" class="form-control {{ errors.has('position') ? 'is-invalid' }}" id="inputPosition"
                    placeholder="Position" name="position" value="{{ old('position', product.position ?: '') ?: '' }}"
                    required min="0">
@@ -31,8 +32,8 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="inputBalance" class="col-sm-3 col-md-2 col-form-label">Balance</label>
-        <div class="col-sm-4 col-md-3 col-lg-3">
+        <label for="inputBalance" class="col-sm-3 col-form-label">Balance</label>
+        <div class="col-sm-4 col-md-3">
             <input type="number" class="form-control {{ errors.has('balance') ? 'is-invalid' }}" id="inputBalance"
                    placeholder="Balance" name="balance" value="{{ old('balance', product.balance ?: '') ?: '' }}"
                    required min="0">
@@ -43,13 +44,26 @@
             {% endif %}
         </div>
     </div>
+    {% if product %}
+        <div class="form-group row">
+            <div class="col-sm-3 col-form-label">Image</div>
+            <div class="col-sm-9">
+                <div class="img-wrapper model-show-image">
+                    {{ product.getFirstMedia('products').img('thumb-120', {
+                        title: 'Image ' ~ product.name|capitalize
+                    }) | raw }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <div class="form-group row">
-        <label for="inputImage" class="col-sm-3 col-md-2 col-form-label">Image</label>
-        <div class="col-sm-9 col-md-10">
+        <label for="inputImage" class="col-sm-3 col-form-label">Upload Image</label>
+        <div class="col-sm-9">
             <div class="custom-file">
                 <input type="file" class="custom-file-input {{ errors.has('image') ? 'is-invalid' }}" id="inputImage"
                        name="image" value="{{ old('image', product.image ?: '') ?: '' }}"
-                       {{ errors.has('image') ?: 'aria-describedby="imageHelp"' }}>
+                       aria-describedby="imageHelp"
+                       {{ not product ? 'required' }}>
                 <label class="custom-file-label" for="inputImage">Choose file</label>
                 {% if errors.has('image') %}
                     <div class="invalid-feedback">
@@ -63,8 +77,8 @@
             </div>
         </div>
     </div>
-    <div class="form-group row cs-product-data cs-action-bar" data-product-name="{{ product.name }}">
-        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 clearfix">
+    <div class="form-group row cs-model-data cs-action-bar" data-model-name="{{ product.name }}">
+        <div class="col-sm-9 offset-sm-3 clearfix">
             <button type="submit" class="btn btn-primary">
                 <i class="fas mr-1 {{ product ? 'fa-edit' : 'fa-plus' }}"></i>
                 {{ product ? 'Edit' : 'Create' }}
@@ -75,8 +89,9 @@
             </a>
             {% if product %}
                 <a href="{{ route('products.destroy', product) }}"
-                   class="btn btn-light cs-product-delete"
-                   data-method="delete">
+                   class="btn btn-light cs-model-delete"
+                   data-method="delete" data-toggle="bootbox"
+                   data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
                     <i class="fas mr-1 fa-trash"></i>
                     Delete
                 </a>

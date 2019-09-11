@@ -150,7 +150,13 @@ return [
         | in order to be marked as safe.
         |
         */
-        'facades' => [],
+        'facades' => [
+            'Route' => [
+                'is_safe' => [
+                    'currentRouteName',
+                ]
+            ]
+        ],
 
         /*
         |--------------------------------------------------------------------------

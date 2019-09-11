@@ -1,0 +1,128 @@
+<form class="cs-form-horizontal" action="{{ user ? route('users.update', user) : route('users.store') }}"
+      method="post" enctype="multipart/form-data">
+
+    {{ csrf_field() }}
+    {{ user ? method_field('put') }}
+
+    <div class="form-group row">
+        <label for="inputFirstName" class="col-sm-3 col-lg-2 col-form-label">First Name</label>
+        <div class="col-sm-9 col-lg-10">
+            <input type="text" class="form-control {{ errors.has('first_name') ? 'is-invalid' }}" id="inputFirstName"
+                   placeholder="First Name" name="first_name"
+                   value="{{ old('first_name', user.first_name ?: '') ?: '' }}"
+                   required maxlength="255" minlength="2" autofocus>
+            {% if errors.has('first_name') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('first_name') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputLastName" class="col-sm-3 col-lg-2 col-form-label">Last Name</label>
+        <div class="col-sm-9 col-lg-10">
+            <input type="text" class="form-control {{ errors.has('last_name') ? 'is-invalid' }}" id="inputLastName"
+                   placeholder="Last Name" name="last_name"
+                   value="{{ old('last_name', user.last_name ?: '') ?: '' }}"
+                   required maxlength="255" minlength="2">
+            {% if errors.has('last_name') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('last_name') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputEmail" class="col-sm-3 col-lg-2 col-form-label">Email</label>
+        <div class="col-sm-9 col-lg-10">
+            <input type="email" class="form-control {{ errors.has('email') ? 'is-invalid' }}" id="inputEmail"
+                   placeholder="Email" name="email" value="{{ old('email', user.email ?: '') ?: '' }}"
+                   required maxlength="255">
+            {% if errors.has('email') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('email') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-3 col-lg-2 col-form-label">Password</label>
+        <div class="col-sm-9 col-lg-10">
+            <input type="password" class="form-control {{ errors.has('password') ? 'is-invalid' }}" id="inputPassword"
+                   placeholder="Password" name="password"
+                   maxlength="255" minlength="9" {{ not user ? 'required' }}>
+            {% if errors.has('password') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('password') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPasswordConfirmation" class="col-sm-3 col-lg-2 col-form-label"></label>
+        <div class="col-sm-9 col-lg-10">
+            <input type="password" class="form-control {{ errors.has('password') ? 'is-invalid' }}"
+                   id="inputPasswordConfirmation" placeholder="Confirm Password" name="password_confirmation"
+                   maxlength="255" minlength="9" {{ not user ? 'required' }}>
+            {% if errors.has('password_confirmation') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('password_confirmation') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if user %}
+        <div class="form-group row">
+            <div class="col-sm-3 col-lg-2 col-form-label">Image</div>
+            <div class="col-sm-9 col-lg-10">
+                <div class="img-wrapper model-show-image">
+                    {{ user.getFirstMedia('users').img('thumb-120', {
+                        title: 'Image ' ~ user.full_name|title
+                    }) | raw }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="form-group row">
+        <label for="inputImage" class="col-sm-3 col-lg-2 col-form-label">Upload Image</label>
+        <div class="col-sm-9 col-lg-10">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input {{ errors.has('image') ? 'is-invalid' }}" id="inputImage"
+                       name="image" value="{{ old('image', user.image ?: '') ?: '' }}"
+                       aria-describedby="imageHelp"
+                       {{ not user ? 'required' }}>
+                <label class="custom-file-label" for="inputImage">Choose file</label>
+                {% if errors.has('image') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('image') }}
+                    </div>
+                {% endif %}
+                <small id="imageHelp" class="form-text text-muted">
+                    <i class="fas fa-info mr-1"></i>
+                    Maximum image size is 2MiB.
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row cs-model-data cs-action-bar" data-model-name="{{ user.full_name }}">
+        <div class="col-sm-9 offset-sm-3 col-lg-10 offset-lg-2 clearfix">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas mr-1 {{ user ? 'fa-edit' : 'fa-plus' }}"></i>
+                {{ user ? 'Edit' : 'Create' }}
+            </button>
+            <a href="{{ route('users.index') }}" class="btn btn-light">
+                <i class="fas mr-1 fa-ban"></i>
+                Cancel
+            </a>
+            {% if user %}
+                <a href="{{ route('users.destroy', user) }}"
+                   class="btn btn-light cs-model-delete"
+                   data-method="delete" data-toggle="bootbox"
+                   data-confirm-message="Do you want to delete <strong>{{ user.full_name|title }}</strong>?">
+                    <i class="fas mr-1 fa-trash"></i>
+                    Delete
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</form>

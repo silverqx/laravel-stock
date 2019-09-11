@@ -77,7 +77,7 @@
 }
 
 /* Product Image */
-.img-wrapper.product-image {
+.img-wrapper.model-show-image {
     width: 126px;
     height: 126px;
 }
@@ -134,3 +134,8 @@
 .cs-fade.in {
     opacity: 1;
 }
+
+/* Common Components
+ ------------------------------------------------------------------------------- */
+@import 'components/table-listing';
+@import 'components/action-bar';

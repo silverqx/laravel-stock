@@ -13,6 +13,7 @@
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('products', 'ProductController');
+    Route::resource('users', 'UserController');
 });
 
 Route::get('/', 'Auth\LoginController@showLoginForm');

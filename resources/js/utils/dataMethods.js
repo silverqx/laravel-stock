@@ -1,7 +1,8 @@
 import $ from 'jquery'
+import bootbox from 'bootbox'
 
 /**
- * Allows to define request method on <a> tag.
+ * Allows to define request method on <a> tag and show bootbox.confirm.
  *
  * Generates <from> with proper csrf and method on click.
  */
@@ -11,61 +12,94 @@ export default class DataMethods {
      */
     static declarative() {
         $('a[data-method], button[data-method]').on('click', (ev) => {
-            if (typeof ev.currentTarget.confirmCallback !== 'function')
-                return this.trigger(ev);
+            ev.preventDefault()
+            ev.stopPropagation()
 
-            // You can bind another on click event and define confirmCallback there
-            ev.currentTarget.confirmCallback(this);
-        });
+            DataMethods.ev = ev
+
+            const $this = $(ev.currentTarget)
+            const dataToggle = $this.data('toggle')
+            const hasBootbox = dataToggle && dataToggle === 'bootbox'
+
+            if (hasBootbox) {
+                const message = $this.data('confirmMessage')
+
+                return DataMethods.confirmCallback(message, $this)
+            }
+
+            return this.trigger($this)
+        })
     }
 
     /**
-     * Trigger <form> generation and submit.
+     * Shows bootbox.confirm to confirm eg delete action.
      *
-     * Call trigger from confirmCallback, can be used eg to show bootbox
-     * confirm dialog.
-     *
-     * @param {jQuery.Event} ev - The jQuery event.
+     * @param {string} message - Bootbox confirm message.
+     * @param {jQuery} $elem - Link tag.
      */
-    static trigger(ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
+    static confirmCallback(message, $elem) {
+        bootbox.confirm({
+            size: 'small',
+            message,
+            backdrop: true,
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-primary'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-light'
+                }
+            },
+            callback: result => {
+                if (result)
+                    DataMethods.trigger($elem)
+            }
+        })
+    }
 
-        let data = {};
-        let $link = $(ev.currentTarget);
+    /**
+     * Triggers <form> generation and submit.
+     *
+     * @param {jQuery} $elem - Link tag.
+     */
+    static trigger($elem) {
+        const data = {}
+        const $link = $elem
 
-        for (var i = 0; i <= $link[0].attributes.length - 1; i++) {
-            let attribute = $link[0].attributes[i];
+        for (let i = 0; i <= $link[0].attributes.length - 1; i++) {
+            let attribute = $link[0].attributes[i]
 
             if (typeof attribute.name != 'string') {
-                continue;
+                continue
             }
 
-            let found = attribute.name.match(/data-values-(.+)/i);
+            let found = attribute.name.match(/data-values-(.+)/i)
 
             if (! found) {
-                continue;
+                continue
             }
 
-            data[found[1]] = attribute.value;
+            data[found[1]] = attribute.value
         }
 
-        let action = $link.attr('href');
-        let method = $link.data('method');
-        // let csrfToken = window.Laravel.csrfToken;
-        let csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+        let action = $link.attr('href')
+        let method = $link.data('method')
+        // let csrfToken = window.Laravel.csrfToken
+        let csrfToken = document.head.querySelector('meta[name="csrf-token"]').content
 
-        let $form = $(`<form method="post" action="${action}"></form>`);
+        let $form = $(`<form method="post" action="${action}"></form>`)
 
-        $form.append(`<input type="hidden" name="_method" value="${method}">`);
-        $form.append(`<input type="hidden" name="_token" value="${csrfToken}">`);
+        $form.append(`<input type="hidden" name="_method" value="${method}">`)
+        $form.append(`<input type="hidden" name="_token" value="${csrfToken}">`)
 
         Object.keys(data).forEach((key) => {
-            $form.append(`<input type="hidden" name="${key}" value="${data[key]}">`);
-        });
+            $form.append(`<input type="hidden" name="${key}" value="${data[key]}">`)
+        })
 
-        $('body').append($form);
+        $('body').append($form)
 
-        $form.submit();
+        $form.submit()
     }
 }

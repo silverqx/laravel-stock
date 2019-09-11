@@ -21,6 +21,7 @@ mix
     .sass('resources/sass/login.scss', 'public/css')
 
     .js('resources/js/pages/product.js', 'public/js/pages')
+    .js('resources/js/pages/user.js', 'public/js/pages')
 
     // Have to be last js, because of vendor and manifest path
     .js('resources/js/common.js', 'public/js')
@@ -69,4 +70,4 @@ if (mix.inProduction())
 //         plugins,
 //     })
 
-mix.dump()
+// mix.dump()

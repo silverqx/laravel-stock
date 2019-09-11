@@ -1,0 +1,29 @@
+@import '~bootstrap/scss/mixins/breakpoints';
+
+/* Button bar
+ ------------------------------------------------------------------------------- */
+.cs-action-bar .btn {
+    display: block;
+    margin: 0 0 6px;
+    width: 100%;
+}
+
+.cs-action-bar .btn:last-child {
+    margin-bottom: 0;
+}
+
+@include media-breakpoint-up(sm) {
+    .cs-action-bar .btn {
+        display: inline-block;
+        margin: 0;
+        width: auto;
+    }
+
+    .cs-action-bar .btn:first-child {
+        margin-right: 6px;
+    }
+
+    .cs-action-bar .cs-model-delete {
+        float: right;
+    }
+}

@@ -9,16 +9,29 @@ use App\Modules\Product\Product;
 class ProductController extends Controller
 {
     /**
-     * Validation rules for a Product.
+     * Validation rules for create a Product.
      *
      * @var array
      */
-    private $productRules = [
-        'name'     => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\w\-_\ ]+$/'],
+    private $storeRules = [
+        'name'     => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
         'position' => 'required|integer|min:0',
         'balance'  => 'required|integer|min:0',
         // Also check config/medialibrary.php max_file_size
         'image'    => 'required|image|mimes:jpeg,png,gif|max:2048'
+    ];
+
+    /**
+     * Validation rules for update a Product.
+     *
+     * @var array
+     */
+    private $updateRules = [
+        'name'     => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
+        'position' => 'required|integer|min:0',
+        'balance'  => 'required|integer|min:0',
+        // Also check config/medialibrary.php max_file_size
+        'image'    => 'image|mimes:jpeg,png,gif|max:2048'
     ];
 
     /**
@@ -57,7 +70,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->productRules);
+        $this->validate($request, $this->storeRules);
 
         /** @var Product $product */
         $product = Product::create($request->all());
@@ -101,14 +114,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $this->validate($request, $this->productRules);
+        $this->validate($request, $this->updateRules);
 
         $product
             ->fill($request->all())
             ->save();
 
-        $product->addMediaFromRequest('image')
-            ->toMediaCollection('products');
+        if ($request->has('image'))
+            $product->addMediaFromRequest('image')
+                ->toMediaCollection('products');
 
         return redirect()->route('products.index');
     }
