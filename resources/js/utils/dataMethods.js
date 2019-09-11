@@ -44,11 +44,11 @@ export default class DataMethods {
             backdrop: true,
             buttons: {
                 confirm: {
-                    label: 'Yes',
+                    label: '<i class="fas fa-check mr-2"></i>Yes',
                     className: 'btn-primary'
                 },
                 cancel: {
-                    label: 'No',
+                    label: '<i class="fas fa-ban mr-2"></i>No',
                     className: 'btn-light'
                 }
             },
