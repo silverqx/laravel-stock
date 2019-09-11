@@ -82,6 +82,42 @@
     height: 126px;
 }
 
+/* Profile Photos */
+.cs-user-profile-photo-small {
+    width: 24px;
+    height: 24px;
+}
+
+.cs-user-profile-photo-medium {
+    width: 32px;
+    height: 32px;
+}
+
+.cs-user-profile-photo-large {
+    width: 50px;
+    height: 50px;
+}
+
+.cs-user-profile-photo-usercard {
+    width: 55px;
+    height: 55px;
+}
+
+.cs-user-profile-photo-profile {
+    width: 100px;
+    height: 100px;
+}
+
+.cs-user-profile-photo-friends-list {
+    width: 180px;
+    height: 180px;
+}
+
+.cs-user-profile-photo-profile-big {
+    width: 218px;
+    height: 218px;
+}
+
 /* Colors
  -----------------------------------------------------------------------------*/
 .red {
@@ -145,6 +181,16 @@
     .dropdown:hover > .dropdown-menu {
         display: block;
     }
+}
+
+/* User Toolbar - Authentication in Header Toolbar
+-----------------------------------------------------------------------------*/
+.cs-user-profile-link img {
+    border: 1px solid #555555;
+    border-radius: 50%;
+    margin-right: 4px;
+    position: relative;
+    top: -2px;
 }
 
 /* Common Components

@@ -99,7 +99,14 @@
                             {% endif %}
                         {% else %}
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle cs-user-profile-link"
+                                   href="#" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ auth_user().getFirstMedia('users').img('thumb-40', {
+                                        width: '24',
+                                        height: '24',
+                                        class: 'cs-user-profile-photo-small'
+                                    }) | raw }}
                                     {{ auth_user().full_name }} <span class="caret"></span>
                                 </a>
 
