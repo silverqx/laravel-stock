@@ -40,9 +40,11 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{ asset('images/logo.png') }}" width="30" height="30"
+                         class="d-inline-block align-top mr-1" alt="Laravel stock logo">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ trans('Toggle navigation') }}">
@@ -52,9 +54,35 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     {% set cr = Route.currentRouteName() %}
-                    <nav class="navbar-nav mr-auto">
-                        <a class="nav-link {{ 'products.' in cr ? 'active' }}" href="{{ route('products.index') }}">Products</a>
-                        <a class="nav-link {{ 'users.' in cr ? 'active' }}" href="{{ route('users.index') }}">Users</a>
+                    <nav class="navbar-nav mr-auto cs-main-navbar">
+                        <div class="nav-item dropdown {{ 'products.' in cr ? 'active' }}">
+                            <a class="nav-link dropdown-toggle" href="{{ route('products.index') }}" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-boxes mr-1"></i>
+                                Products
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item {{ 'products.create' in cr ? 'active' }}"
+                                   href="{{ route('products.create') }}">
+                                    <i class="fas fa-box mr-1"></i>
+                                    Create Product
+                                </a>
+                            </div>
+                        </div>
+                        <div class="nav-item dropdown {{ 'users.' in cr ? 'active' }}">
+                            <a class="nav-link dropdown-toggle" href="{{ route('users.index') }}" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-users mr-1"></i>
+                                Users
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item {{ 'users.create' in cr ? 'active' }}"
+                                   href="{{ route('users.create') }}">
+                                    <i class="fas fa-user-plus mr-1"></i>
+                                    Create User
+                                </a>
+                            </div>
+                        </div>
                     </nav>
 
                     <!-- Right Side Of Navbar -->

@@ -135,6 +135,18 @@
     opacity: 1;
 }
 
+/* Twitter Bootstrap overrides
+ ------------------------------------------------------------------------------- */
+// Dropdown on hover
+.cs-main-navbar {
+    .dropdown > .dropdown-menu {
+        top: 95%;
+    }
+    .dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+}
+
 /* Common Components
  ------------------------------------------------------------------------------- */
 @import 'components/table-listing';
