@@ -1,0 +1,15 @@
+{% set fieldArr = field is iterable ? field : field|split(',') %}
+<th scope="col">
+    <a href="{{ route(currentRouteName, {
+        orderBy: fieldArr,
+        direction: orderBy == fieldArr and direction == 'asc' ? 'desc' : 'asc',
+        page: currentPage > 1 ? currentPage : null
+    }) }}">
+        <span class="text-nowrap">
+            <span>{{ name }}</span>
+            {% if orderBy == fieldArr %}
+                <i class="fas {{ icon ~ (direction == 'asc' ? 'down ': 'up')}} ml-2"></i>
+            {% endif %}
+        </span>
+    </a>
+</th>

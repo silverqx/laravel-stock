@@ -4,11 +4,23 @@ namespace App\Http\Controllers;
 
 use Hash;
 use Illuminate\Http\Request;
+use Route;
 
 use App\Modules\User\User;
 
 class UserController extends Controller
 {
+    /**
+     * Validation rules for a Products listing.
+     *
+     * @var array
+     */
+    private $indexRules = [
+        // array to support multi sort
+        'orderBy'   => 'required_with:direction|array|in:id,first_name,last_name,email',
+        'direction' => 'in:asc,desc',
+    ];
+
     /**
      * Validation rules for create a User.
      *
@@ -55,16 +67,33 @@ class UserController extends Controller
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function index(Request $request)
     {
+        $this->validate($request, $this->indexRules);
+
         $search = $request->query('search');
+        $orderBy = $request->query('orderBy', 'id');
+        $direction = $request->query('direction', 'asc');
 
         $users = User::where('first_name', 'like', "%$search%")
             ->orWhere('last_name', 'like', "%$search%")
-            ->paginate(10);
+            ->tap(function ($query) use ($orderBy, $direction) {
+                collect($orderBy)
+                    ->each(function ($item) use ($query, $direction) {
+                        $query->orderBy($item, $direction);
+                    });
+            })
+            ->paginate(2)
+            ->appends(compact('search', 'orderBy', 'direction'));
 
-        return view('user.index', compact('users', 'search'));
+        $currentRouteName = Route::currentRouteName();
+        $currentPage = $users->currentPage();
+
+        return view('user.index',
+            compact('users', 'search', 'orderBy', 'direction', 'currentRouteName', 'currentPage')
+        );
     }
 
     /**

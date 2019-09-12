@@ -3,11 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Route;
 
 use App\Modules\Product\Product;
 
 class ProductController extends Controller
 {
+    /**
+     * Validation rules for a Products listing.
+     *
+     * @var array
+     */
+    private $indexRules = [
+        // array to support multi sort
+        'orderBy'   => 'required_with:direction|array|in:id,name,balance,position',
+        'direction' => 'string|in:asc,desc',
+    ];
+
     /**
      * Validation rules for create a Product.
      *
@@ -40,14 +52,32 @@ class ProductController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function index(Request $request)
     {
+        $this->validate($request, $this->indexRules);
+
         $search = $request->query('search');
+        $orderBy = $request->query('orderBy', 'id');
+        $direction = $request->query('direction', 'asc');
 
-        $products = Product::where('name', 'like', "%$search%")->paginate(10);
+        $products = Product::where('name', 'like', "%$search%")
+            ->tap(function ($query) use ($orderBy, $direction) {
+                collect($orderBy)
+                    ->each(function ($item) use ($query, $direction) {
+                        $query->orderBy($item, $direction);
+                    });
+            })
+            ->paginate(10)
+            ->appends(compact('search', 'orderBy', 'direction'));
 
-        return view('product.index', compact('products', 'search'));
+        $currentRouteName = Route::currentRouteName();
+        $currentPage = $products->currentPage();
+
+        return view('product.index',
+            compact('products', 'search', 'orderBy', 'direction', 'currentRouteName', 'currentPage')
+        );
     }
 
     /**
