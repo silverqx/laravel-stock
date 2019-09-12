@@ -190,7 +190,10 @@ class UserController extends Controller
     {
         $user->delete();
 
-        \Storage::disk('public')->deleteDirectory($user->id);
+        // Do not delete, because soft delete model enabled
+//        \Storage::disk('public')->deleteDirectory(
+//            $user->media->first()->getKey()
+//        );
 
         return redirect()->route('users.index');
     }

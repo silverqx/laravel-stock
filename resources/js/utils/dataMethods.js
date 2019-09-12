@@ -45,7 +45,7 @@ export default class DataMethods {
             buttons: {
                 confirm: {
                     label: '<i class="fas fa-check mr-2"></i>Yes',
-                    className: 'btn-primary'
+                    className: 'btn-danger'
                 },
                 cancel: {
                     label: '<i class="fas fa-ban mr-2"></i>No',

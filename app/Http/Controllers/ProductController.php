@@ -169,7 +169,10 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        \Storage::disk('public')->deleteDirectory($product->id);
+        // Do not delete, because soft delete model enabled
+//        \Storage::disk('public')->deleteDirectory(
+//            $product->media->first()->getKey()
+//        );
 
         return redirect()->route('products.index');
     }

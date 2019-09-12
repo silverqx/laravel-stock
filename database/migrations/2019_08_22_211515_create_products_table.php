@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('balance')->comment('Number of Products in stock.');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
