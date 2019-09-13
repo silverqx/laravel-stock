@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index(ListingRequest $request)
     {
         $search = $request->query('search');
-        $orderBy = $request->query('orderBy', 'id');
+        $orderBy = $request->query('orderBy', ['id']);
         $direction = $request->query('direction', 'asc');
 
         $users = User::where('first_name', 'like', "%$search%")

@@ -21,7 +21,7 @@ class ProductController extends Controller
     public function index(ListingRequest $request)
     {
         $search = $request->query('search');
-        $orderBy = $request->query('orderBy', 'id');
+        $orderBy = $request->query('orderBy', ['id']);
         $direction = $request->query('direction', 'asc');
 
         $products = Product::where('name', 'like', "%$search%")
