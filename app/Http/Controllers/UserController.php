@@ -3,76 +3,24 @@
 namespace App\Http\Controllers;
 
 use Hash;
-use Illuminate\Http\Request;
 use Route;
 
+use App\Http\Requests\User\ListingRequest;
+use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Modules\User\User;
 
 class UserController extends Controller
 {
     /**
-     * Validation rules for a Products listing.
-     *
-     * @var array
-     */
-    private $indexRules = [
-        // array to support multi sort
-        'orderBy'   => 'required_with:direction|array|in:id,first_name,last_name,email',
-        'direction' => 'in:asc,desc',
-    ];
-
-    /**
-     * Validation rules for create a User.
-     *
-     * @var array
-     */
-    private $storeRules = [
-        'first_name' => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-        'last_name'  => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-        'email'      => 'required|email|max:255|unique:users,email',
-        // Also check config/medialibrary.php max_file_size
-        'image'      => 'required|image|mimes:jpeg,png,gif|max:2048',
-        'password'   => [
-            'required',
-            'confirmed',
-            'min:9',
-            'max:255',
-            'regex:/^(?=.*[a-z|A-Z])(?=.*[A-Z])(?=.*\d).+$/'
-        ],
-    ];
-
-    /**
-     * Validation rules for update a User.
-     *
-     * @var array
-     */
-    private $updateRules = [
-        'first_name' => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-        'last_name'  => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-        'email'      => 'required|email|max:255|unique:users,email',
-        // Also check config/medialibrary.php max_file_size
-        'image'      => 'image|mimes:jpeg,png,gif|max:2048',
-        'password'   => [
-            'nullable',
-            'confirmed',
-            'min:9',
-            'max:255',
-            'regex:/^(?=.*[a-z|A-Z])(?=.*[A-Z])(?=.*\d).+$/'
-        ],
-    ];
-
-    /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param ListingRequest $request
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function index(Request $request)
+    public function index(ListingRequest $request)
     {
-        $this->validate($request, $this->indexRules);
-
         $search = $request->query('search');
         $orderBy = $request->query('orderBy', 'id');
         $direction = $request->query('direction', 'asc');
@@ -85,7 +33,7 @@ class UserController extends Controller
                         $query->orderBy($item, $direction);
                     });
             })
-            ->paginate(2)
+            ->paginate(20)
             ->appends(compact('search', 'orderBy', 'direction'));
 
         $currentRouteName = Route::currentRouteName();
@@ -109,15 +57,15 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $this->validate($request, $this->storeRules);
-
         $user = new User($request->all());
         $user->password = Hash::make($request->input('password'));
         $user->save();
@@ -153,17 +101,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Modules\User\User   $user
+     * @param UpdateRequest          $request
+     * @param \App\Modules\User\User $user
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateRequest $request, User $user)
     {
-        $this->updateRules['email'] .= ",$user->id";
-        $this->validate($request, $this->updateRules);
-
         $user->fill($request->all());
 
         if ($request->has('password'))

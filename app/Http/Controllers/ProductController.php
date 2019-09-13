@@ -2,62 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Route;
 
+use App\Http\Requests\Product\ListingRequest;
+use App\Http\Requests\Product\StoreRequest;
+use App\Http\Requests\Product\UpdateRequest;
 use App\Modules\Product\Product;
 
 class ProductController extends Controller
 {
     /**
-     * Validation rules for a Products listing.
-     *
-     * @var array
-     */
-    private $indexRules = [
-        // array to support multi sort
-        'orderBy'   => 'required_with:direction|array|in:id,name,balance,position',
-        'direction' => 'string|in:asc,desc',
-    ];
-
-    /**
-     * Validation rules for create a Product.
-     *
-     * @var array
-     */
-    private $storeRules = [
-        'name'     => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-        'position' => 'required|integer|min:0',
-        'balance'  => 'required|integer|min:0',
-        // Also check config/medialibrary.php max_file_size
-        'image'    => 'required|image|mimes:jpeg,png,gif|max:2048'
-    ];
-
-    /**
-     * Validation rules for update a Product.
-     *
-     * @var array
-     */
-    private $updateRules = [
-        'name'     => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-        'position' => 'required|integer|min:0',
-        'balance'  => 'required|integer|min:0',
-        // Also check config/medialibrary.php max_file_size
-        'image'    => 'image|mimes:jpeg,png,gif|max:2048'
-    ];
-
-    /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param ListingRequest $request
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function index(Request $request)
+    public function index(ListingRequest $request)
     {
-        $this->validate($request, $this->indexRules);
-
         $search = $request->query('search');
         $orderBy = $request->query('orderBy', 'id');
         $direction = $request->query('direction', 'asc');
@@ -69,7 +31,7 @@ class ProductController extends Controller
                         $query->orderBy($item, $direction);
                     });
             })
-            ->paginate(10)
+            ->paginate(20)
             ->appends(compact('search', 'orderBy', 'direction'));
 
         $currentRouteName = Route::currentRouteName();
@@ -93,15 +55,15 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreRequest $request
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $this->validate($request, $this->storeRules);
-
         /** @var Product $product */
         $product = Product::create($request->all());
 
@@ -136,16 +98,16 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request     $request
+     * @param UpdateRequest                $request
      * @param \App\Modules\Product\Product $product
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateRequest $request, Product $product)
     {
-        $this->validate($request, $this->updateRules);
-
         $product
             ->fill($request->all())
             ->save();
