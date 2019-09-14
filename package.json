@@ -7,11 +7,17 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "heroku-postbuild": "npm run production"
     },
     "devDependencies": {
+        "webpack-bundle-analyzer": "^3.4.1"
+    },
+    "dependencies": {
         "axios": "^0.19",
+        "bootbox": "^5.3.2",
         "bootstrap": "^4.1.0",
+        "bs-custom-file-input": "^1.3.2",
         "cross-env": "^5.2.1",
         "jquery": "^3.2",
         "laravel-mix": "^4.1.4",
@@ -20,11 +26,10 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.3.1",
-        "vue-template-compiler": "^2.6.10",
-        "webpack-bundle-analyzer": "^3.4.1"
+        "vue-template-compiler": "^2.6.10"
     },
-    "dependencies": {
-        "bootbox": "^5.3.2",
-        "bs-custom-file-input": "^1.3.2"
+    "engines": {
+        "node": "~10.16.0",
+        "npm": "~6.11.0"
     }
 }

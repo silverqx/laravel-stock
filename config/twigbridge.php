@@ -118,7 +118,7 @@ return [
             // 'TwigBridge\Extension\Laravel\Legacy\Facades',
 
             // Laravel DebugBar
-            'Barryvdh\Debugbar\Twig\Extension\Debug',
+//            'Barryvdh\Debugbar\Twig\Extension\Debug',
 //            'Barryvdh\Debugbar\Twig\Extension\Dump',
 //            'Barryvdh\Debugbar\Twig\Extension\Stopwatch',
         ],
