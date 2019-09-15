@@ -7,7 +7,11 @@
   Laravel Stock
 </h1>
 
-This is my Laravel Stock test application. 
+[![Heroku](http://heroku-badge.herokuapp.com/?app=angularjs-crypto&style=flat&svg=1)](https://cs-laravel-stock.herokuapp.com)
+
+This is my Laravel Stock test application.
+
+Application is deployed at https://cs-laravel-stock.herokuapp.com.
 
 ## Installation
 
