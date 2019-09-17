@@ -67,8 +67,9 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan ide-helper:generate",
-            "php artisan ide-helper:meta"
+            "php artisan ide-helper:generate --no-interaction --env=development",
+            "php artisan ide-helper:meta --no-interaction --env=development",
+            "php artisan ide-helper:models --nowrite --no-interaction --env=development"
         ],
         "compile": [
             "php artisan view:cache",
