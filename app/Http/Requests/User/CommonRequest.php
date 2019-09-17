@@ -14,8 +14,8 @@ class CommonRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
-            'last_name'  => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\-_\ ]+$/u'],
+            'first_name' => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\p{Nd}\.\-_\ ]+$/u'],
+            'last_name'  => ['required', 'min:2', 'max:255', 'string', 'regex:/^[\pL\p{Nd}\.\-_\ ]+$/u'],
         ];
     }
 }
