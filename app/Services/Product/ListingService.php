@@ -37,7 +37,7 @@ class ListingService
             });
 
         return $this->productsQuery
-            ->paginate(3)
+            ->paginate(20)
             ->appends(compact('search', 'orderBy', 'direction'));
     }
 
