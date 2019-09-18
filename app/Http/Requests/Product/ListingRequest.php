@@ -17,6 +17,7 @@ class ListingRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO add search and check pagination params, like page silver
         return array_merge($this->paginationRules(), []);
     }
 }

@@ -87,7 +87,7 @@
                 <i class="fas mr-1 fa-ban"></i>
                 Cancel
             </a>
-            {% if product %}
+            {% if product and can('delete', product) %}
                 <a href="{{ route('products.destroy', product) }}"
                    class="btn btn-light cs-model-delete"
                    data-method="delete" data-toggle="bootbox"

@@ -3,7 +3,8 @@
     <a href="{{ route(currentRouteName, {
         orderBy: fieldArr,
         direction: orderBy == fieldArr and direction == 'asc' ? 'desc' : 'asc',
-        page: currentPage > 1 ? currentPage : null
+        page: currentPage > 1 ? currentPage : null,
+        search: search
     }) }}">
         <span class="text-nowrap">
             <span>{{ name }}</span>

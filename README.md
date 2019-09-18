@@ -23,15 +23,40 @@ Application is deployed at https://cs-laravel-stock.herokuapp.com.
 * `npm install`
 * `npm run dev` or `npm run watch`
 
-## Notes
-
-### Authentication and Authorization
+## Authentication
 
 Application contains three users, these are their login data:
 
 * silver.zachara@gmail.com - pass
 * peter@example.com - pass
 * andrej@example.com - pass
+
+## Authorization
+
+Application contains these permissions:
+
+* viewAny product
+* view product
+* create product
+* edit own product
+* edit any product
+* delete own product
+* delete any product
+* manage users
+
+The permissions are assigned to users as follow:
+
+* silver.zachara@gmail.com ( acts as administrator )
+    * have all permissions
+* peter@example.com ( acts as operator )
+    * viewAny product
+    * view product
+    * create product
+    * edit own product
+    * delete own product
+* andrej@example.com ( acts as client )
+    * viewAny product
+    * view product
 
 ### Others
 

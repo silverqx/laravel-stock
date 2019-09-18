@@ -16,6 +16,9 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->string('name');
             $table->unsignedInteger('position')->comment('Product Position in stock.');
             $table->unsignedInteger('balance')->comment('Number of Products in stock.');

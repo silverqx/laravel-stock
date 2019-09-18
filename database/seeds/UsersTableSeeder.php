@@ -20,29 +20,41 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      * @throws BindingResolutionException
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
      */
     public function run()
     {
         $this->userImages = Storage::disk('seed_images')->files('users');
 
-        $this->attachImageTo(User::create([
-            'email'        => 'silver.zachara@gmail.com',
-            'first_name'   => 'Silver',
-            'last_name'    => 'Zachara',
-            'password'     => app('hash')->make('pass'),
-        ]));
-        $this->attachImageTo(User::create([
-            'email'        => 'peter@example.com',
-            'first_name'   => 'Peter',
-            'last_name'    => 'Janovič',
-            'password'     => app('hash')->make('pass'),
-        ]));
-        $this->attachImageTo(User::create([
-            'email'        => 'andrej@example.com',
-            'first_name'   => 'Andrej',
-            'last_name'    => 'Hasil',
-            'password'     => app('hash')->make('pass'),
-        ]));
+        $this->attachImageTo(
+            User::create([
+                'email'        => 'silver.zachara@gmail.com',
+                'first_name'   => 'Silver',
+                'last_name'    => 'Zachara',
+                'password'     => app('hash')->make('pass'),
+            ])
+                ->assignRole('administrator')
+        );
+        $this->attachImageTo(
+            User::create([
+                'email'        => 'peter@example.com',
+                'first_name'   => 'Peter',
+                'last_name'    => 'Janovič',
+                'password'     => app('hash')->make('pass'),
+            ])
+                ->assignRole('operator')
+        );
+        $this->attachImageTo(
+            User::create([
+                'email'        => 'andrej@example.com',
+                'first_name'   => 'Andrej',
+                'last_name'    => 'Hasil',
+                'password'     => app('hash')->make('pass'),
+            ])
+                ->assignRole('client')
+        );
     }
 
     /**
@@ -51,6 +63,9 @@ class UsersTableSeeder extends Seeder
      * @param User $user
      *
      * @return User
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
      */
     private function attachImageTo(User $user): User
     {

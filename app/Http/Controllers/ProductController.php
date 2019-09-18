@@ -8,15 +8,36 @@ use App\Http\Requests\Product\ListingRequest;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Modules\Product\Product;
+use App\Services\Product\ListingService;
 
 class ProductController extends Controller
 {
+    /**
+     * Listing Products Service.
+     *
+     * @var ListingService
+     */
+    private $listingService;
+
+    /**
+     * ProductController constructor.
+     *
+     * @param ListingService $listingService Listing Products Service.
+     */
+    public function __construct(ListingService $listingService)
+    {
+        $this->authorizeResource(Product::class);
+
+        $this->listingService = $listingService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @param ListingRequest $request
      *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function index(ListingRequest $request)
     {
@@ -24,21 +45,21 @@ class ProductController extends Controller
         $orderBy = $request->query('orderBy', ['id']);
         $direction = $request->query('direction', 'asc');
 
-        $products = Product::where('name', 'like', "%$search%")
-            ->tap(function ($query) use ($orderBy, $direction) {
-                collect($orderBy)
-                    ->each(function ($item) use ($query, $direction) {
-                        $query->orderBy($item, $direction);
-                    });
-            })
-            ->paginate(20)
-            ->appends(compact('search', 'orderBy', 'direction'));
+        // Paginated Products
+        $products = $this->listingService->getProducts($search, $orderBy, $direction);
 
         $currentRouteName = Route::currentRouteName();
         $currentPage = $products->currentPage();
 
+        // User's Products Count
+        $userProductsCount = $this->listingService->userProductsCount($request->user()->id);
+        // Should Hide Actions Column?
+        $hideActions = $this->listingService->hideActions($request->user(), $userProductsCount);
+
         return view('product.index',
-            compact('products', 'search', 'orderBy', 'direction', 'currentRouteName', 'currentPage')
+            compact('products', 'search', 'orderBy', 'direction', 'currentRouteName',
+                'currentPage', 'hideActions'
+            )
         );
     }
 

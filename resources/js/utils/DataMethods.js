@@ -84,7 +84,7 @@ export default class DataMethods {
             data[found[1]] = attribute.value
         }
 
-        let action = $link.attr('href')
+        let action = $link.attr('href') || $link.data('href')
         let method = $link.data('method')
         // let csrfToken = window.Laravel.csrfToken
         let csrfToken = document.head.querySelector('meta[name="csrf-token"]').content

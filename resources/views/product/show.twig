@@ -41,16 +41,20 @@
                                 <i class="fas mr-1 fa-arrow-left"></i>
                                 Back
                             </a>
-                            <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
-                                <i class="fas fa-edit mr-1"></i>
-                                Edit
-                            </a>
-                            <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
-                               data-method="delete" data-toggle="bootbox"
-                               data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
-                                <i class="fas mr-1 fa-trash"></i>
-                                Delete
-                            </a>
+                            {% if can('update', product) %}
+                                <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
+                                    <i class="fas fa-edit mr-1"></i>
+                                    Edit
+                                </a>
+                            {% endif %}
+                            {% if can('delete', product) %}
+                                <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
+                                   data-method="delete" data-toggle="bootbox"
+                                   data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
+                                    <i class="fas mr-1 fa-trash"></i>
+                                    Delete
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                     <tr class="d-table-row d-sm-none">
@@ -59,16 +63,20 @@
                                 <i class="fas mr-1 fa-arrow-left"></i>
                                 Back
                             </a>
-                            <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
-                                <i class="fas fa-edit mr-1"></i>
-                                Edit
-                            </a>
-                            <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
-                               data-method="delete" data-toggle="bootbox"
-                               data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
-                                <i class="fas mr-1 fa-trash"></i>
-                                Delete
-                            </a>
+                            {% if can('update', product) %}
+                                <a class="btn btn-primary" href="{{ route('products.edit', product) }}">
+                                    <i class="fas fa-edit mr-1"></i>
+                                    Edit
+                                </a>
+                            {% endif %}
+                            {% if can('delete', product) %}
+                                <a class="btn btn-light float-right" href="{{ route('products.destroy', product) }}"
+                                   data-method="delete" data-toggle="bootbox"
+                                   data-confirm-message="Do you want to delete <strong>{{ product.name|capitalize }}</strong>?">
+                                    <i class="fas mr-1 fa-trash"></i>
+                                    Delete
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                 </table>

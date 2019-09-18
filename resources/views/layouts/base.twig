@@ -55,34 +55,46 @@
                     <!-- Left Side Of Navbar -->
                     {% set cr = Route.currentRouteName() %}
                     <nav class="navbar-nav mr-auto cs-main-navbar">
-                        <div class="nav-item dropdown {{ 'products.' in cr ? 'active' }}">
-                            <a class="nav-link dropdown-toggle" href="{{ route('products.index') }}" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-boxes mr-1"></i>
-                                Products
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item {{ 'products.create' in cr ? 'active' }}"
-                                   href="{{ route('products.create') }}">
-                                    <i class="fas fa-box mr-1"></i>
-                                    Create Product
+                        {% if can('viewAny product') %}
+                            {% if can('create product') %}
+                                <div class="nav-item dropdown {{ 'products.' in cr ? 'active' }}">
+                                    <a class="nav-link dropdown-toggle" href="{{ route('products.index') }}" role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-boxes mr-1"></i>
+                                        Products
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item {{ 'products.create' in cr ? 'active' }}"
+                                           href="{{ route('products.create') }}">
+                                            <i class="fas fa-box mr-1"></i>
+                                            Create Product
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <a class="nav-link {{ 'products.' in cr ? 'active' }}"
+                                   href="{{ route('products.index') }}">
+                                    <i class="fas fa-boxes mr-1"></i>
+                                    Products
                                 </a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown {{ 'users.' in cr ? 'active' }}">
-                            <a class="nav-link dropdown-toggle" href="{{ route('users.index') }}" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-users mr-1"></i>
-                                Users
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item {{ 'users.create' in cr ? 'active' }}"
-                                   href="{{ route('users.create') }}">
-                                    <i class="fas fa-user-plus mr-1"></i>
-                                    Create User
+                            {% endif %}
+                        {% endif %}
+                        {% if can('manage users') %}
+                            <div class="nav-item dropdown {{ 'users.' in cr ? 'active' }}">
+                                <a class="nav-link dropdown-toggle" href="{{ route('users.index') }}" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-users mr-1"></i>
+                                    Users
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item {{ 'users.create' in cr ? 'active' }}"
+                                       href="{{ route('users.create') }}">
+                                        <i class="fas fa-user-plus mr-1"></i>
+                                        Create User
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     </nav>
 
                     <!-- Right Side Of Navbar -->

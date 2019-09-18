@@ -5,6 +5,8 @@ namespace App\Modules\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Modules\User\User;
+
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -22,6 +24,16 @@ class Product extends Model implements HasMedia
     protected $fillable = [
         'name', 'position', 'balance',
     ];
+
+    /**
+     * User relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * Register the media conversions.
