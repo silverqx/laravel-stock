@@ -17,7 +17,8 @@
                         <input type="text" class="form-control" name="search" placeholder="Search"
                                aria-label="Search input" aria-describedby="button-search"
                                autocomplete="off" autocapitalize="none" spellcheck="false"
-                               autofocus value="{{ search ?? '' }}">
+                               autofocus value="{{ search ?? '' }}"
+                               minlength="2" maxlength="255">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="submit" id="button-search">
                                 <i class="fas fa-search"></i>
