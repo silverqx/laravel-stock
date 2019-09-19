@@ -1,139 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') | replace({ '_': '-' }) }}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta content="noindex,nofollow" name="robots">
-    <meta content="noindex,nofollow,snippet,noarchive" name="googlebot">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ block('title') is defined and block('title')|length > 0
         ? block('title') ~ ' | ' ~ config('app.name')
         : config('app.name') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ mix('/js/manifest.js') }}" defer></script>
-    <script src="{{ mix('/js/vendor.js') }}" defer></script>
-    <script src="{{ mix('/js/common.js') }}" defer></script>
+    {% include 'layouts/components/head' %}
+
     {% block javascript %}{% endblock %}
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link rel="dns-prefetch" href="//fonts.gstatic.com/">
-    <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com/" crossorigin>
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
-          integrity="sha256-zmfNZmXoNWBMemUOo1XUGFfc0ihGGLYdgtJS3KCr/l0=" crossorigin="anonymous">
-
-    <!-- Styles -->
-    <link href="{{ mix('/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
-
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('images/logo.png') }}" width="30" height="30"
-                         class="d-inline-block align-top mr-1" alt="Laravel stock logo">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ trans('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    {% set cr = Route.currentRouteName() %}
-                    <nav class="navbar-nav mr-auto cs-main-navbar">
-                        {% if can('viewAny product') %}
-                            {% if can('create product') %}
-                                <div class="nav-item dropdown {{ 'products.' in cr ? 'active' }}">
-                                    <a class="nav-link dropdown-toggle" href="{{ route('products.index') }}" role="button"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-boxes mr-1"></i>
-                                        Products
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item {{ 'products.create' in cr ? 'active' }}"
-                                           href="{{ route('products.create') }}">
-                                            <i class="fas fa-box mr-1"></i>
-                                            Create Product
-                                        </a>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <a class="nav-link {{ 'products.' in cr ? 'active' }}"
-                                   href="{{ route('products.index') }}">
-                                    <i class="fas fa-boxes mr-1"></i>
-                                    Products
-                                </a>
-                            {% endif %}
-                        {% endif %}
-                        {% if can('manage users') %}
-                            <div class="nav-item dropdown {{ 'users.' in cr ? 'active' }}">
-                                <a class="nav-link dropdown-toggle" href="{{ route('users.index') }}" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-users mr-1"></i>
-                                    Users
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item {{ 'users.create' in cr ? 'active' }}"
-                                       href="{{ route('users.create') }}">
-                                        <i class="fas fa-user-plus mr-1"></i>
-                                        Create User
-                                    </a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </nav>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        {% if auth_guest() %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ trans('Login') }}</a>
-                            </li>
-                            {% if route_has('register') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ trans('Register') }}</a>
-                                </li>
-                            {% endif %}
-                        {% else %}
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle cs-user-profile-link"
-                                   href="#" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ auth_user().getFirstMedia('users').img('thumb-40', {
-                                        width: '24',
-                                        height: '24',
-                                        class: 'cs-user-profile-photo-small'
-                                    }) | raw }}
-                                    {{ auth_user().full_name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" data-method="post">
-                                        <i class="fas mr-1 fa-sign-out-alt"></i>
-                                        {{ trans('Logout') }}
-                                    </a>
-                                </div>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        {% include 'layouts/components/navbar' %}
 
         <main class="container py-4">
             <div class="row justify-content-center">
