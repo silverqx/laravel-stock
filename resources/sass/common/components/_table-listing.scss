@@ -12,10 +12,3 @@
 .cs-tbl-listing tbody td:hover:not(.cs-actions) {
     cursor: pointer;
 }
-
-/* Show model table
- ------------------------------------------------------------------------------- */
-.cs-tbl-show tr td:first-child {
-    font-weight: bold;
-    width: 6rem;
-}

@@ -46,6 +46,12 @@
     </div>
     {% if product %}
         <div class="form-group row">
+            <label for="inputBalance" class="col-sm-3 col-form-label">Created By</label>
+            <div class="col-sm-4 col-md-3 d-flex align-items-center">
+                <span>{{ product.user.full_name }}</span>
+            </div>
+        </div>
+        <div class="form-group row">
             <div class="col-sm-3 col-form-label">Image</div>
             <div class="col-sm-9">
                 <div class="img-wrapper model-show-image">

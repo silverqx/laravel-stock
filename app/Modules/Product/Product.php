@@ -4,6 +4,7 @@ namespace App\Modules\Product;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Route;
 
 use App\Modules\User\User;
 
@@ -33,6 +34,23 @@ class Product extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param mixed $value Route value.
+     *
+     * @return Model|null
+     */
+    public function resolveRouteBinding($value)
+    {
+        if (Route::currentRouteName() === 'products.show')
+            return $this->where($this->getRouteKeyName(), $value)
+                ->with('user:id,first_name,last_name')
+                ->first();
+
+        return parent::resolveRouteBinding($value);
     }
 
     /**
