@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Concerns;
 
-trait HasPaginationRequest {
+trait HasSortableRequest {
     /**
      * Get the validation rules that apply to the request.
      *
@@ -11,8 +11,8 @@ trait HasPaginationRequest {
     public function paginationRules()
     {
         return [
-            // array to support multi sort
-            'orderBy'   => 'required_with:direction|array|in:id,name,balance,position',
+            // is array to support multi sort
+            'orderBy'   => "required_with:direction|array|in:$this->orderBy",
             'direction' => 'string|in:asc,desc',
         ];
     }

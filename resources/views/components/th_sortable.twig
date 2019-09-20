@@ -5,12 +5,11 @@
         direction: orderBy == fieldArr and direction == 'asc' ? 'desc' : 'asc',
         page: currentPage > 1 ? currentPage : null,
         search: search
-    }) }}">
-        <span class="text-nowrap">
-            <span>{{ name }}</span>
-            {% if orderBy == fieldArr %}
-                <i class="fas {{ icon ~ (direction == 'asc' ? 'down ': 'up')}} ml-2"></i>
-            {% endif %}
-        </span>
+    }) }}"
+       class="text-nowrap d-block">
+        <span>{{ name }}</span>
+        {% if orderBy == fieldArr %}
+            <i class="fas {{ icon ~ (direction == 'asc' ? 'down ': 'up')}} ml-2"></i>
+        {% endif %}
     </a>
 </th>

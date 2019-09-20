@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\User\ListingService;
 use Hash;
 use Route;
 
@@ -9,6 +10,7 @@ use App\Http\Requests\User\ListingRequest;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Modules\User\User;
+use function foo\func;
 
 class UserController extends Controller
 {
@@ -25,16 +27,8 @@ class UserController extends Controller
         $orderBy = $request->query('orderBy', ['id']);
         $direction = $request->query('direction', 'asc');
 
-        $users = User::where('first_name', 'like', "%$search%")
-            ->orWhere('last_name', 'like', "%$search%")
-            ->tap(function ($query) use ($orderBy, $direction) {
-                collect($orderBy)
-                    ->each(function ($item) use ($query, $direction) {
-                        $query->orderBy($item, $direction);
-                    });
-            })
-            ->paginate(20)
-            ->appends(compact('search', 'orderBy', 'direction'));
+        // Paginated Users
+        $users = app(ListingService::class)->getUsers($search, $orderBy, $direction);
 
         $currentRouteName = Route::currentRouteName();
         $currentPage = $users->currentPage();
@@ -79,7 +73,8 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Modules\User\User  $user
+     * @param User $user
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -90,7 +85,8 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Modules\User\User  $user
+     * @param User $user
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
@@ -101,8 +97,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateRequest          $request
-     * @param \App\Modules\User\User $user
+     * @param UpdateRequest $request
+     * @param User          $user
      *
      * @return \Illuminate\Http\Response
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
@@ -128,7 +124,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Modules\User\User $user
+     * @param User $user
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception

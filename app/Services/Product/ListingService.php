@@ -2,11 +2,13 @@
 
 namespace App\Services\Product;
 
-use Illuminate\Database\Query\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
+use DB;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Modules\Product\Product;
 use App\Modules\User\User;
+use Illuminate\Http\Request;
 
 class ListingService
 {
@@ -18,27 +20,52 @@ class ListingService
     private $productsQuery;
 
     /**
+     * Search query.
+     *
+     * @var string|null
+     */
+    private $search;
+
+    /**
+     * ListingService constructor.
+     *
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->search = $request->query('search');
+
+        $this->productsQuery = Product::tap(function ($query) {
+            if ($this->search)
+                $query->where('name', 'like', "%$this->search%");
+        });
+    }
+
+    /**
      * Get paginated Products for Listing table.
      *
-     * @param string|null $search    Search query.
-     * @param array       $orderBy   Order by Column name.
-     * @param string      $direction Order by Direction.
+     * @param array  $orderBy   Order by Column name.
+     * @param string $direction Order by Direction.
      *
-     * @return LengthAwarePaginator Paginated Products.
+     * @return LengthAwarePaginator
      */
-    public function getProducts(?string $search, array $orderBy, string $direction): LengthAwarePaginator
+    public function getProducts(array $orderBy, string $direction): LengthAwarePaginator
     {
-        $this->productsQuery = Product::where('name', 'like', "%$search%")
+        return $this->cloneProductsQuery()
+            ->select([
+                'products.*',
+                DB::raw('CONCAT_WS(" ", first_name, last_name) AS user_full_name')
+            ])
+            ->join('users', 'users.id', '=', 'products.user_id')
             ->tap(function ($query) use ($orderBy, $direction) {
                 collect($orderBy)
                     ->each(function ($item) use ($query, $direction) {
                         $query->orderBy($item, $direction);
                     });
-            });
-
-        return $this->productsQuery
+            })
             ->paginate(20)
-            ->appends(compact('search', 'orderBy', 'direction'));
+            ->appends('search', $this->search)
+            ->appends(compact('orderBy', 'direction'));
     }
 
     /**
@@ -50,7 +77,7 @@ class ListingService
      */
     public function userProductsCount(int $userId): int
     {
-        return $this->productsQuery
+        return $this->cloneProductsQuery()
             ->where('user_id', $userId)
             ->count();
     }
@@ -74,5 +101,15 @@ class ListingService
                 )
                 || ($user->cant('edit own product') && $user->cant('delete own product'))
             );
+    }
+
+    /**
+     * Clone Products query.
+     *
+     * @return Builder
+     */
+    private function cloneProductsQuery(): Builder
+    {
+        return clone $this->productsQuery;
     }
 }

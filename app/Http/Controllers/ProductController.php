@@ -13,48 +13,38 @@ use App\Services\Product\ListingService;
 class ProductController extends Controller
 {
     /**
-     * Listing Products Service.
-     *
-     * @var ListingService
-     */
-    private $listingService;
-
-    /**
      * ProductController constructor.
-     *
-     * @param ListingService $listingService Listing Products Service.
      */
-    public function __construct(ListingService $listingService)
+    public function __construct()
     {
         $this->authorizeResource(Product::class);
-
-        $this->listingService = $listingService;
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param ListingRequest $request
+     * @param ListingService $listingService Listing Products Service.
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function index(ListingRequest $request)
+    public function index(ListingRequest $request, ListingService $listingService)
     {
         $search = $request->query('search');
         $orderBy = $request->query('orderBy', ['id']);
         $direction = $request->query('direction', 'asc');
 
         // Paginated Products
-        $products = $this->listingService->getProducts($search, $orderBy, $direction);
+        $products = $listingService->getProducts($orderBy, $direction);
 
         $currentRouteName = Route::currentRouteName();
         $currentPage = $products->currentPage();
 
         // User's Products Count
-        $userProductsCount = $this->listingService->userProductsCount($request->user()->id);
+        $userProductsCount = $listingService->userProductsCount($request->user()->id);
         // Should Hide Actions Column?
-        $hideActions = $this->listingService->hideActions($request->user(), $userProductsCount);
+        $hideActions = $listingService->hideActions($request->user(), $userProductsCount);
 
         return view('product.index',
             compact('products', 'search', 'orderBy', 'direction', 'currentRouteName',
@@ -97,7 +87,8 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Modules\Product\Product  $product
+     * @param Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -108,7 +99,8 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Modules\Product\Product  $product
+     * @param Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
@@ -119,8 +111,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateRequest                $request
-     * @param \App\Modules\Product\Product $product
+     * @param UpdateRequest $request
+     * @param Product       $product
      *
      * @return \Illuminate\Http\Response
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
@@ -143,7 +135,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Modules\Product\Product $product
+     * @param Product $product
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception
