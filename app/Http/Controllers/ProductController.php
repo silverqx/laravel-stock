@@ -76,7 +76,7 @@ class ProductController extends Controller
     public function store(StoreRequest $request)
     {
         /** @var Product $product */
-        $product = Product::create($request->all());
+        $product = $request->user()->products()->create($request->all());
 
         $product->addMediaFromRequest('image')
             ->toMediaCollection('products');

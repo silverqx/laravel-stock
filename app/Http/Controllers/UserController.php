@@ -10,8 +10,8 @@ use App\Http\Requests\User\ListingRequest;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Modules\User\User;
-use function foo\func;
 
+// TODO add deactivate user silver
 class UserController extends Controller
 {
     /**
